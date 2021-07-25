@@ -2,6 +2,8 @@ package com.xichuan.wiki.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class TestController {
     /**
@@ -28,6 +30,11 @@ public class TestController {
     //2021-07-25 12:03:04.028 WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver :207  [32m                  [0;39m Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported]
     @GetMapping("/hello")
     public String hello() {
-        return "hello wikis";
+        return "hello wikis !";
+    }
+
+    @PostMapping("/hello/post")
+    public String helloPost(String name){
+        return "hello wikis ! Post "+name;
     }
 }
