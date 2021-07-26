@@ -1,6 +1,7 @@
 package com.xichuan.wiki.controller;
 
 import com.xichuan.wiki.domain.Ebook;
+import com.xichuan.wiki.req.EbookReq;
 import com.xichuan.wiki.resp.CommonResp;
 import com.xichuan.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,28 @@ public class EbookController {
         return resp;
     }
 
+    /***
+     * 模糊查询
+     * @param name
+     * @return
+     */
     @GetMapping("/listByName")
     public CommonResp list(String name) {
         CommonResp<List<Ebook>> resp = new CommonResp<>();
         List<Ebook> list = ebookService.list( name);
+        resp.setContent(list);
+        return resp;
+    }
+
+    /***
+     * 参数使用实体进行模糊查询
+     * @param ebookReq
+     * @return
+     */
+    @GetMapping("/listByEntity")
+    public CommonResp list(EbookReq ebookReq) {
+        CommonResp<List<Ebook>> resp = new CommonResp<>();
+        List<Ebook> list = ebookService.list( ebookReq);
         resp.setContent(list);
         return resp;
     }

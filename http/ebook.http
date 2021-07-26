@@ -9,3 +9,7 @@ GET http://localhost:8080/ebook/listByName?name=教程
 ###
 
 GET http://localhost:8080/ebook/listByName?name=Spring
+
+###
+
+GET http://localhost:8080/ebook/listByEntity?name=Spring
