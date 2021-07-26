@@ -1,6 +1,7 @@
 package com.xichuan.wiki.service;
 
 import com.xichuan.wiki.domain.Ebook;
+import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +15,12 @@ public class EbookService {
 
     public List<Ebook> list() {
         return ebookMapper.selectByExample(null);
+    }
+
+    public List<Ebook> list(String name) {
+        EbookExample ebookExample = new EbookExample();
+        EbookExample.Criteria criteria = ebookExample.createCriteria();
+        criteria.andNameLike("%"+name+"%");
+        return ebookMapper.selectByExample(ebookExample);
     }
 }

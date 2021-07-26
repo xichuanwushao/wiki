@@ -1,3 +1,11 @@
 
 //测试mybatis集成示范代码
 GET http://localhost:8080/ebook/list
+
+###
+
+GET http://localhost:8080/ebook/listByName?name=教程
+
+###
+
+GET http://localhost:8080/ebook/listByName?name=Spring

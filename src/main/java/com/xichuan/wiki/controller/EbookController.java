@@ -17,12 +17,18 @@ public class EbookController {
     @Resource
     private EbookService ebookService;
 
-
-
     @GetMapping("/list")
     public CommonResp list() {
         CommonResp<List<Ebook>> resp = new CommonResp<>();
         List<Ebook> list = ebookService.list();
+        resp.setContent(list);
+        return resp;
+    }
+
+    @GetMapping("/listByName")
+    public CommonResp list(String name) {
+        CommonResp<List<Ebook>> resp = new CommonResp<>();
+        List<Ebook> list = ebookService.list( name);
         resp.setContent(list);
         return resp;
     }
