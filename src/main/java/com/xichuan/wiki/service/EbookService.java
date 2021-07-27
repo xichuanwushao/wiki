@@ -5,6 +5,7 @@ import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
 import com.xichuan.wiki.req.EbookReq;
 import com.xichuan.wiki.resp.EbookResp;
+import com.xichuan.wiki.util.CopyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,11 @@ public class EbookService {
         return ebookMapper.selectByExample(ebookExample);
     }
 
+    /***
+     * 对象普通复制
+     * @param ebookReq
+     * @return
+     */
     public List<EbookResp> listResp(EbookReq ebookReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
@@ -47,6 +53,39 @@ public class EbookService {
             BeanUtils.copyProperties(ebook,ebookResp);
             respList.add(ebookResp);
         }
+        return respList;
+    }
+
+    /***
+     * 对象CopyUtil复制
+     * @param ebookReq
+     * @return
+     */
+    public List<EbookResp> listResp1(EbookReq ebookReq) {
+        EbookExample ebookExample = new EbookExample();
+        EbookExample.Criteria criteria = ebookExample.createCriteria();
+        criteria.andNameLike("%"+ebookReq.getName()+"%");
+        List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+
+        List<EbookResp> respList = new ArrayList<>() ;
+        for (Ebook ebook :ebookList){
+            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
+            respList.add(ebookResp);
+        }
+        return respList;
+    }
+
+    /***
+     * 列表CopyUtil复制
+     * @param ebookReq
+     * @return
+     */
+    public List<EbookResp> listResp2(EbookReq ebookReq) {
+        EbookExample ebookExample = new EbookExample();
+        EbookExample.Criteria criteria = ebookExample.createCriteria();
+        criteria.andNameLike("%"+ebookReq.getName()+"%");
+        List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
         return respList;
     }
 

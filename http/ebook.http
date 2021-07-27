@@ -16,4 +16,4 @@ GET http://localhost:8080/ebook/listByEntity?name=Spring
 
 ###
 
-GET http://localhost:8080/ebook/listResp?name=Spring
+GET http://localhost:8080/ebook/listResp?name=Spring #制作了CopyUtil来copy对象
