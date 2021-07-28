@@ -54,17 +54,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent , onMounted } from 'vue';
 import axios from 'axios';
 export default defineComponent({
   name: 'Home',
   setup(){
     console.log("setup");
-    axios.get("http://localhost:8080/ebook/listResp?name=Spring").then(function (response) {
+    onMounted( ()=> {
+        console.log("onMounted");
+      axios.get("http://localhost:8080/ebook/listResp?name=Spring").then((response) => {
         console.log(response)
-    })
-    axios.get("http://localhost:8080/ebook/listResp?name=Spring").then((response) => {
-      console.log(response)
+      })
     })
   }
 });
