@@ -49,23 +49,32 @@
             :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       Content
+      <pre>
+{{ebooks}}}
+      </pre>
     </a-layout-content>
   </a-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent , onMounted } from 'vue';
+import { defineComponent , onMounted ,ref} from 'vue';
 import axios from 'axios';
 export default defineComponent({
   name: 'Home',
   setup(){
     console.log("setup");
+    const ebooks = ref();
     onMounted( ()=> {
         console.log("onMounted");
-      axios.get("http://localhost:8080/ebook/listResp?name=Spring").then((response) => {
+        axios.get("http://localhost:8080/ebook/listResp?name=Spring").then((response) => {
+        const data = response.data;
+        ebooks.value = data.content;
         console.log(response)
       })
     })
+    return {
+      ebooks
+    }
   }
 });
 </script>
