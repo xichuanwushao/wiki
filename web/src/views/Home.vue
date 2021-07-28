@@ -50,30 +50,36 @@
     >
       Content
       <pre>
+        ref
 {{ebooks}}}
+        reactive
+{{mybooks2}}}
       </pre>
     </a-layout-content>
   </a-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent , onMounted ,ref} from 'vue';
+import { defineComponent , onMounted ,ref , reactive, toRef} from 'vue';
 import axios from 'axios';
 export default defineComponent({
   name: 'Home',
   setup(){
     console.log("setup");
     const ebooks = ref();
+    const ebooks2 = reactive({books2:[]})
     onMounted( ()=> {
         console.log("onMounted");
         axios.get("http://localhost:8080/ebook/listResp?name=Spring").then((response) => {
         const data = response.data;
         ebooks.value = data.content;
+        ebooks2.books2 = data.content;
         console.log(response)
       })
     })
     return {
-      ebooks
+      ebooks,
+      mybooks2 :toRef(ebooks2,"books2")
     }
   }
 });
