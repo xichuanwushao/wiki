@@ -102,6 +102,11 @@ export default defineComponent({
         ebooks.value = data.content;
         ebooks2.books2 = data.content;
         console.log(response)
+        console.log(response)
+        console.log(response)
+        console.log(11111)
+        console.log(11111)
+        console.log(11111)
       })
     })
     return {
