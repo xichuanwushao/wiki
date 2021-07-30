@@ -1,5 +1,6 @@
 package com.xichuan.wiki.service;
 
+import com.github.pagehelper.PageHelper;
 import com.xichuan.wiki.domain.Ebook;
 import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
@@ -82,9 +83,10 @@ public class EbookService {
      * @return
      */
     public List<EbookResp> listResp2(EbookReq ebookReq) {
+        PageHelper.startPage(1,2);
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        if(ObjectUtils.isEmpty(ebookReq.getName())){
+        if(!ObjectUtils.isEmpty(ebookReq.getName())){
             criteria.andNameLike("%"+ebookReq.getName()+"%");
         }
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
