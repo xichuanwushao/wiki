@@ -16,9 +16,13 @@ GET http://localhost:8080/ebook/listByEntity?name=Spring
 
 ###
 
-GET http://localhost:8080/ebook/listResp?name=Spring #制作了CopyUtil来copy对象
+GET http://localhost:8080/ebook/listResp?name=Spring
 
 ###
 
 GET http://localhost:8080/ebook/listResp #制作了CopyUtil来copy对象
+
+###
+
+GET http://localhost:8080/ebook/listResp?page=1&size=1
 

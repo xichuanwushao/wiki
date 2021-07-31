@@ -90,10 +90,12 @@ public class EbookService {
     public List<EbookResp> listResp2(EbookReq ebookReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
+
         if(!ObjectUtils.isEmpty(ebookReq.getName())){
             criteria.andNameLike("%"+ebookReq.getName()+"%");
         }
-        PageHelper.startPage(1,2);
+
+        PageHelper.startPage(ebookReq.getPage(),ebookReq.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);

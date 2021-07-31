@@ -1,6 +1,8 @@
 package com.xichuan.wiki.req;
 
-public class EbookReq {
+import com.xichuan.wiki.resp.PageReq;
+
+public class EbookReq extends PageReq {
     private Long id;
 
     private String name;
