@@ -3,13 +3,13 @@ package com.xichuan.wiki.controller;
 import com.xichuan.wiki.req.EbookReq;
 import com.xichuan.wiki.resp.CommonResp;
 import com.xichuan.wiki.resp.EbookResp;
+import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/ebook")
@@ -25,8 +25,8 @@ public class EbookController {
      */
     @GetMapping("/list")
     public CommonResp list(EbookReq ebookReq) {
-        CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list = ebookService.list( ebookReq);
+        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
+        PageResp<EbookResp> list = ebookService.list( ebookReq);
         resp.setContent(list);
         return resp;
     }
