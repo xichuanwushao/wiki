@@ -17,7 +17,7 @@
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
-            <a-button type="primary" >
+            <a-button type="primary"  @click="showModal" >
                 编辑
             </a-button>
               <a-button type="danger">
@@ -26,10 +26,25 @@
           </a-space>
         </template>
       </a-table>
-
+      <a-modal
+              title="Title"
+              v-model:visible="visible"
+              :confirm-loading="confirmLoading"
+              @ok="handleOk"
+      >
+        <p>{{ modalText }}</p>
+      </a-modal>
 
     </a-layout-content>
   </a-layout>
+  <a-modal
+          title="Title"
+          v-model:visible="visible"
+          :confirm-loading="confirmLoading"
+          @ok="handleOk"
+  >
+    <p>{{ modalText }}</p>
+  </a-modal>
 </template>
 
 <script lang="ts">
@@ -117,6 +132,22 @@
         });
       };
 
+      const modalText = ref<string>('Content of the modal');
+      const visible = ref<boolean>(false);
+      const confirmLoading = ref<boolean>(false);
+
+      const showModal = () => {
+        visible.value = true;
+      };
+
+      const handleOk = () => {
+        modalText.value = 'The modal will be closed after two seconds';
+        confirmLoading.value = true;
+        setTimeout(() => {
+          visible.value = false;
+          confirmLoading.value = false;
+        }, 2000);
+      };
 
       onMounted(() => {
         handleQuery({
@@ -132,6 +163,11 @@
         columns,
         loading,
         handleTableChange,
+        modalText,
+        visible,
+        confirmLoading,
+        showModal,
+        handleOk,
       }
     }
   });
