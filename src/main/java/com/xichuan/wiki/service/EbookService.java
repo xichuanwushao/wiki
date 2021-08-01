@@ -5,7 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.xichuan.wiki.domain.Ebook;
 import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
-import com.xichuan.wiki.req.EbookReq;
+import com.xichuan.wiki.req.EbookQueryReq;
+import com.xichuan.wiki.req.EbookSaveReq;
 import com.xichuan.wiki.resp.EbookResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.util.CopyUtil;
@@ -26,19 +27,19 @@ public class EbookService {
 
     /***
      * 列表CopyUtil复制
-     * @param ebookReq
+     * @param ebookQueryReq
      * @return
      */
-    public PageResp<EbookResp> list(EbookReq ebookReq) {
+    public PageResp<EbookResp> list(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
 
-        if(!ObjectUtils.isEmpty(ebookReq.getName())){
-            criteria.andNameLike("%"+ebookReq.getName()+"%");
+        if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
+            criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         }
 
-        if(ebookReq.getPage()!=0 && ebookReq.getSize()!=0) {
-            PageHelper.startPage(ebookReq.getPage(), ebookReq.getSize());
+        if(ebookQueryReq.getPage()!=0 && ebookQueryReq.getSize()!=0) {
+            PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
         }
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
@@ -52,4 +53,16 @@ public class EbookService {
         return pageResp;
     }
 
+    /***
+     * 保存接口
+     * @param ebook
+     */
+    public void save(EbookSaveReq ebookSaveReq) {
+        Ebook ebook = CopyUtil.copy(ebookSaveReq,Ebook.class);
+        if(ObjectUtils.isEmpty(ebook.getId())){
+            ebookMapper.insert(ebook);
+        }else{
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
+    }
 }
