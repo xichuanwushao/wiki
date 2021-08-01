@@ -3,7 +3,7 @@ package com.xichuan.wiki.controller;
 import com.xichuan.wiki.domain.Ebook;
 import com.xichuan.wiki.req.EbookQueryReq;
 import com.xichuan.wiki.resp.CommonResp;
-import com.xichuan.wiki.resp.EbookResp;
+import com.xichuan.wiki.resp.EbookQueryResp;
 import com.xichuan.wiki.service.EbookServiceTest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,8 +60,8 @@ public class EbookControllerTest {
      */
     @GetMapping("/listResp")
     public CommonResp listResp(EbookQueryReq ebookQueryReq) {
-        CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list = ebookServiceTest.listResp2(ebookQueryReq);
+        CommonResp<List<EbookQueryResp>> resp = new CommonResp<>();
+        List<EbookQueryResp> list = ebookServiceTest.listResp2(ebookQueryReq);
         resp.setContent(list);
         return resp;
     }

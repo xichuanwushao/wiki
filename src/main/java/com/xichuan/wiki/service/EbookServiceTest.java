@@ -6,7 +6,7 @@ import com.xichuan.wiki.domain.Ebook;
 import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
 import com.xichuan.wiki.req.EbookQueryReq;
-import com.xichuan.wiki.resp.EbookResp;
+import com.xichuan.wiki.resp.EbookQueryResp;
 import com.xichuan.wiki.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,17 +48,17 @@ public class EbookServiceTest {
      * @param ebookQueryReq
      * @return
      */
-    public List<EbookResp> listResp(EbookQueryReq ebookQueryReq) {
+    public List<EbookQueryResp> listResp(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
-        List<EbookResp> respList = new ArrayList<>() ;
+        List<EbookQueryResp> respList = new ArrayList<>() ;
         for (Ebook ebook :ebookList){
-            EbookResp ebookResp = new EbookResp();
-            BeanUtils.copyProperties(ebook,ebookResp);
-            respList.add(ebookResp);
+            EbookQueryResp ebookQueryResp = new EbookQueryResp();
+            BeanUtils.copyProperties(ebook, ebookQueryResp);
+            respList.add(ebookQueryResp);
         }
         return respList;
     }
@@ -68,16 +68,16 @@ public class EbookServiceTest {
      * @param ebookQueryReq
      * @return
      */
-    public List<EbookResp> listResp1(EbookQueryReq ebookQueryReq) {
+    public List<EbookQueryResp> listResp1(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
-        List<EbookResp> respList = new ArrayList<>() ;
+        List<EbookQueryResp> respList = new ArrayList<>() ;
         for (Ebook ebook :ebookList){
-            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
-            respList.add(ebookResp);
+            EbookQueryResp ebookQueryResp = CopyUtil.copy(ebook, EbookQueryResp.class);
+            respList.add(ebookQueryResp);
         }
         return respList;
     }
@@ -87,7 +87,7 @@ public class EbookServiceTest {
      * @param ebookQueryReq
      * @return
      */
-    public List<EbookResp> listResp2(EbookQueryReq ebookQueryReq) {
+    public List<EbookQueryResp> listResp2(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
 
@@ -102,7 +102,7 @@ public class EbookServiceTest {
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
         log.info("总行数:{}",pageInfo.getTotal());
         log.info("总页数:{}",pageInfo.getPages());
-        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
+        List<EbookQueryResp> respList = CopyUtil.copyList(ebookList, EbookQueryResp.class);
         return respList;
     }
 

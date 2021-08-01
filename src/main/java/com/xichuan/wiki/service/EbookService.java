@@ -7,7 +7,7 @@ import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
 import com.xichuan.wiki.req.EbookQueryReq;
 import com.xichuan.wiki.req.EbookSaveReq;
-import com.xichuan.wiki.resp.EbookResp;
+import com.xichuan.wiki.resp.EbookQueryResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.util.CopyUtil;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class EbookService {
      * @param ebookQueryReq
      * @return
      */
-    public PageResp<EbookResp> list(EbookQueryReq ebookQueryReq) {
+    public PageResp<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
 
@@ -46,8 +46,8 @@ public class EbookService {
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
         log.info("总行数:{}",pageInfo.getTotal());
         log.info("总页数:{}",pageInfo.getPages());
-        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
-        PageResp<EbookResp> pageResp = new PageResp();
+        List<EbookQueryResp> respList = CopyUtil.copyList(ebookList, EbookQueryResp.class);
+        PageResp<EbookQueryResp> pageResp = new PageResp();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
         return pageResp;
