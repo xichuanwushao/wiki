@@ -17,7 +17,7 @@
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
-            <a-button type="primary"  @click="showModal" >
+            <a-button type="primary"  @click="edit" >
                 编辑
             </a-button>
               <a-button type="danger">
@@ -26,22 +26,13 @@
           </a-space>
         </template>
       </a-table>
-      <a-modal
-              title="Title"
-              v-model:visible="visible"
-              :confirm-loading="confirmLoading"
-              @ok="handleOk"
-      >
-        <p>{{ modalText }}</p>
-      </a-modal>
-
     </a-layout-content>
   </a-layout>
   <a-modal
-          title="Title"
-          v-model:visible="visible"
-          :confirm-loading="confirmLoading"
-          @ok="handleOk"
+          title="电子书表单"
+          v-model:visible="modalVisible"
+          :confirm-loading="modalLoading"
+          @ok="handleModalOk"
   >
     <p>{{ modalText }}</p>
   </a-modal>
@@ -133,20 +124,19 @@
       };
 
       const modalText = ref<string>('Content of the modal');
-      const visible = ref<boolean>(false);
-      const confirmLoading = ref<boolean>(false);
-
-      const showModal = () => {
-        visible.value = true;
+      const modalVisible = ref<boolean>(false);
+      const modalLoading = ref<boolean>(false);
+      const handleModalOk = () => {
+        modalText.value = 'The modal will be closed after two seconds';
+        modalLoading.value = true;
+        setTimeout(() => {
+          modalVisible.value = false;
+          modalLoading.value = false;
+        }, 2000);
       };
 
-      const handleOk = () => {
-        modalText.value = 'The modal will be closed after two seconds';
-        confirmLoading.value = true;
-        setTimeout(() => {
-          visible.value = false;
-          confirmLoading.value = false;
-        }, 2000);
+      const edit = () => {
+        modalVisible.value = true;
       };
 
       onMounted(() => {
@@ -164,10 +154,10 @@
         loading,
         handleTableChange,
         modalText,
-        visible,
-        confirmLoading,
-        showModal,
-        handleOk,
+        modalVisible,
+        modalLoading,
+        edit,
+        handleModalOk,
       }
     }
   });
