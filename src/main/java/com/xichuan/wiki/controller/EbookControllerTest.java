@@ -1,7 +1,7 @@
 package com.xichuan.wiki.controller;
 
 import com.xichuan.wiki.domain.Ebook;
-import com.xichuan.wiki.req.EbookReq;
+import com.xichuan.wiki.req.EbookQueryReq;
 import com.xichuan.wiki.resp.CommonResp;
 import com.xichuan.wiki.resp.EbookResp;
 import com.xichuan.wiki.service.EbookServiceTest;
@@ -42,26 +42,26 @@ public class EbookControllerTest {
 
     /***
      * 参数使用实体进行模糊查询
-     * @param ebookReq
+     * @param ebookQueryReq
      * @return
      */
     @GetMapping("/listByEntity")
-    public CommonResp list(EbookReq ebookReq) {
+    public CommonResp list(EbookQueryReq ebookQueryReq) {
         CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookServiceTest.list( ebookReq);
+        List<Ebook> list = ebookServiceTest.list(ebookQueryReq);
         resp.setContent(list);
         return resp;
     }
 
     /***
      * 参数使用实体进行模糊查询 并返回指定类型实体
-     * @param ebookReq
+     * @param ebookQueryReq
      * @return
      */
     @GetMapping("/listResp")
-    public CommonResp listResp(EbookReq ebookReq) {
+    public CommonResp listResp(EbookQueryReq ebookQueryReq) {
         CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list = ebookServiceTest.listResp2( ebookReq);
+        List<EbookResp> list = ebookServiceTest.listResp2(ebookQueryReq);
         resp.setContent(list);
         return resp;
     }

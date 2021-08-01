@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.xichuan.wiki.domain.Ebook;
 import com.xichuan.wiki.domain.EbookExample;
 import com.xichuan.wiki.mapper.EbookMapper;
-import com.xichuan.wiki.req.EbookReq;
+import com.xichuan.wiki.req.EbookQueryReq;
 import com.xichuan.wiki.resp.EbookResp;
 import com.xichuan.wiki.util.CopyUtil;
 import org.slf4j.Logger;
@@ -36,22 +36,22 @@ public class EbookServiceTest {
         return ebookMapper.selectByExample(ebookExample);
     }
 
-    public List<Ebook> list(EbookReq ebookReq) {
+    public List<Ebook> list(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+ebookReq.getName()+"%");
+        criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         return ebookMapper.selectByExample(ebookExample);
     }
 
     /***
      * 对象普通复制
-     * @param ebookReq
+     * @param ebookQueryReq
      * @return
      */
-    public List<EbookResp> listResp(EbookReq ebookReq) {
+    public List<EbookResp> listResp(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+ebookReq.getName()+"%");
+        criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         List<EbookResp> respList = new ArrayList<>() ;
@@ -65,13 +65,13 @@ public class EbookServiceTest {
 
     /***
      * 对象CopyUtil复制
-     * @param ebookReq
+     * @param ebookQueryReq
      * @return
      */
-    public List<EbookResp> listResp1(EbookReq ebookReq) {
+    public List<EbookResp> listResp1(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+ebookReq.getName()+"%");
+        criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         List<EbookResp> respList = new ArrayList<>() ;
@@ -84,18 +84,18 @@ public class EbookServiceTest {
 
     /***
      * 列表CopyUtil复制
-     * @param ebookReq
+     * @param ebookQueryReq
      * @return
      */
-    public List<EbookResp> listResp2(EbookReq ebookReq) {
+    public List<EbookResp> listResp2(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
 
-        if(!ObjectUtils.isEmpty(ebookReq.getName())){
-            criteria.andNameLike("%"+ebookReq.getName()+"%");
+        if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
+            criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         }
-        if(ebookReq.getPage()!=0 && ebookReq.getSize()!=0) {
-            PageHelper.startPage(ebookReq.getPage(), ebookReq.getSize());
+        if(ebookQueryReq.getPage()!=0 && ebookQueryReq.getSize()!=0) {
+            PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
         }
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
