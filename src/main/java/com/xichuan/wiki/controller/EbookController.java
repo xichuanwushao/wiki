@@ -32,7 +32,7 @@ public class EbookController {
 
     /***
      * 参数使用实体进行模糊查询 并返回指定类型实体
-     * @param EbookSaveReq
+     * @param ebookSaveReq
      * @return
      */
     @PostMapping("/save")

@@ -10,6 +10,7 @@ import com.xichuan.wiki.req.EbookSaveReq;
 import com.xichuan.wiki.resp.EbookQueryResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.util.CopyUtil;
+import com.xichuan.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import java.util.List;
 public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
+    @Resource
+    private SnowFlake snowFlake;
 
     private static final Logger log = LoggerFactory.getLogger(EbookService.class);
 
@@ -55,11 +58,15 @@ public class EbookService {
 
     /***
      * 保存接口
-     * @param ebook
+     * @param ebookSaveReq
      */
     public void save(EbookSaveReq ebookSaveReq) {
         Ebook ebook = CopyUtil.copy(ebookSaveReq,Ebook.class);
         if(ObjectUtils.isEmpty(ebook.getId())){
+            ebook.setId(snowFlake.nextId());
+            ebook.setDocCount(1);
+            ebook.setViewCount(1);
+            ebook.setVoteCount(1);
             ebookMapper.insert(ebook);
         }else{
             ebookMapper.updateByPrimaryKey(ebook);
