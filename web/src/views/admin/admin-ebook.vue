@@ -25,7 +25,7 @@
             <a-button type="primary"  @click="edit(record)" >
                 编辑
             </a-button>
-              <a-button type="danger">
+              <a-button type="danger" @click="handleDelete(record.id)">
                 删除
               </a-button>
           </a-space>
@@ -185,6 +185,23 @@
         ebook.value = {};
       };
 
+      /***
+       * 删除
+       */
+      //const handleDelete = ( id : number ) => {
+      const handleDelete = (id: number) => {
+        console.log("删除ID "+id);
+        axios.delete("/ebook/delete/"+id).then((response) => {
+          const data = response.data;
+          if(data.success){
+            handleQuery({
+              page : pagination.value.current,
+              size : pagination.value.pageSize,
+            });
+          }
+        });
+      };
+
       onMounted(() => {
         handleQuery({
           page : 1,
@@ -207,6 +224,7 @@
 
         edit,
         add,
+        handleDelete,
       }
     }
   });

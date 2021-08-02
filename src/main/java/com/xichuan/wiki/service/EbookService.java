@@ -64,12 +64,16 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(ebookSaveReq,Ebook.class);
         if(ObjectUtils.isEmpty(ebook.getId())){
             ebook.setId(snowFlake.nextId());
-            ebook.setDocCount(1);
-            ebook.setViewCount(1);
-            ebook.setVoteCount(1);
+            ebook.setDocCount(0);
+            ebook.setViewCount(0);
+            ebook.setVoteCount(0);
             ebookMapper.insert(ebook);
         }else{
             ebookMapper.updateByPrimaryKey(ebook);
         }
+    }
+
+    public void delete(Long id) {
+        ebookMapper.deleteByPrimaryKey(id);
     }
 }
