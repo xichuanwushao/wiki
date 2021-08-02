@@ -25,9 +25,17 @@
             <a-button type="primary"  @click="edit(record)" >
                 编辑
             </a-button>
-              <a-button type="danger" @click="handleDelete(record.id)">
+            <a-popconfirm
+                    title="删除后不可恢复，确认删除?"
+                    ok-text="确认"
+                    cancel-text="取消"
+                    @confirm="handleDelete(record.id)"
+            >
+              <a-button type="danger">
                 删除
               </a-button>
+            </a-popconfirm>
+
           </a-space>
         </template>
       </a-table>
@@ -53,7 +61,7 @@
         <a-input v-model:value="ebook.category2Id" />
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="ebook.desc"  type="textarea" />
+        <a-input v-model:value="ebook.description"  type="textarea" />
       </a-form-item>
 
     </a-form>
