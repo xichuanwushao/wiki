@@ -79,7 +79,7 @@
       const ebooks = ref();
       const pagination = ref({
         current: 1,
-        pageSize:1001,
+        pageSize:10,
         total: 0
       });
       const loading = ref(false);
@@ -171,14 +171,16 @@
         // }, 2000);
 
         axios.post("/ebook/save",ebook.value).then((response) => {
+          modalLoading.value = false;//loading的效果只要后端有返回的时候就应该去除掉 而不是返回成功的时候再去除掉
           const data = response.data;
           if(data.success){
             modalVisible.value = false;
-            modalLoading.value = false;
             handleQuery({
               page : pagination.value.current,
               size : pagination.value.pageSize,
             });
+          }else{
+              message.error(data.message);
           }
         });
       };
