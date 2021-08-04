@@ -1,0 +1,49 @@
+
+//测试mybatis集成示范代码
+GET http://localhost:8080/categoryTest/list
+
+###
+
+GET http://localhost:8080/categoryTest/listByName?name=教程
+
+###
+
+GET http://localhost:8080/categoryTest/listByName?name=Spring
+
+###
+
+GET http://localhost:8080/categoryTest/listByEntity?name=Spring
+
+###
+
+GET http://localhost:8080/categoryTest/listResp?name=Spring
+
+###
+
+GET http://localhost:8080/categoryTest/listResp
+
+###
+
+GET http://localhost:8080/categoryTest/listResp?page=1&size=2
+
+###
+
+GET http://localhost:8080/category/list?name=Vue
+
+###
+
+GET http://localhost:8080/category/list #制作了CopyUtil来copy对象
+
+###
+
+GET http://localhost:8080/category/list?page=1&size=2&name=Vue
+
+###
+
+POST http://localhost:8080/category/save
+
+{}
+
+###
+
+GET http://localhost:8080/category/list?page=1&size=10001
