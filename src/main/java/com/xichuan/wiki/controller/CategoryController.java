@@ -2,8 +2,8 @@ package com.xichuan.wiki.controller;
 
 import com.xichuan.wiki.req.CategoryQueryReq;
 import com.xichuan.wiki.req.CategorySaveReq;
-import com.xichuan.wiki.resp.CommonResp;
 import com.xichuan.wiki.resp.CategoryQueryResp;
+import com.xichuan.wiki.resp.CommonResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.service.CategoryService;
 import org.springframework.web.bind.annotation.*;

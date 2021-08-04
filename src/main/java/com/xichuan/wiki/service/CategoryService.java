@@ -20,13 +20,13 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class CateoryService {
+public class CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
     @Resource
     private SnowFlake snowFlake;
 
-    private static final Logger log = LoggerFactory.getLogger(CateoryService.class);
+    private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
 
     /***
      * 列表CopyUtil复制
@@ -64,9 +64,6 @@ public class CateoryService {
         Category category = CopyUtil.copy(categorySaveReq,Category.class);
         if(ObjectUtils.isEmpty(category.getId())){
             category.setId(snowFlake.nextId());
-            category.setDocCount(0);
-            category.setViewCount(0);
-            category.setVoteCount(0);
             categoryMapper.insert(category);
         }else{
             categoryMapper.updateByPrimaryKey(category);

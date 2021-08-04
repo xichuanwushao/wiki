@@ -1,14 +1,12 @@
-package com.xichuan.wiki.req;
+package com.xichuan.wiki.resp;
 
-import javax.validation.constraints.NotNull;
-
-public class CategorySaveReq {
+public class CategoryQueryResp {
     private Long id;
 
     private Long parent;
-    @NotNull(message = "【名称】不能为空")
+
     private String name;
-    @NotNull(message = "【排序】不能为空")
+
     private Integer sort;
 
     public Long getId() {
