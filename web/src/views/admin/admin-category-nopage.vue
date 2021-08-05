@@ -25,7 +25,7 @@
       <a-table
               :columns="columns"
               :row-key="record => record.id"
-              :data-source="categorys"
+              :data-source="level1"
               :pagination="false"
               :loading="loading"
       >
@@ -213,7 +213,7 @@
 
       return {
         level1,
-        categorys,
+        //categorys,
         columns,
         loading,
         category,
