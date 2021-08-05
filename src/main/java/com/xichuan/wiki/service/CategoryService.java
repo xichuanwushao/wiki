@@ -27,6 +27,19 @@ public class CategoryService {
     private SnowFlake snowFlake;
 
     private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
+    /***
+     * 列表CopyUtil复制
+     * @param categoryQueryReq
+     * @return
+     */
+    public List<CategoryQueryResp> all(CategoryQueryReq categoryQueryReq) {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+        List<CategoryQueryResp> respList = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+        return respList;
+    }
+
 
     /***
      * 列表CopyUtil复制
@@ -36,6 +49,7 @@ public class CategoryService {
     public PageResp<CategoryQueryResp> list(CategoryQueryReq categoryQueryReq) {
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        categoryExample.setOrderByClause("sort asc");
 
         if(!ObjectUtils.isEmpty(categoryQueryReq.getName())){
             criteria.andNameLike("%"+ categoryQueryReq.getName()+"%");

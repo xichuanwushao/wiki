@@ -47,3 +47,13 @@ POST http://localhost:8080/category/save
 ###
 
 GET http://localhost:8080/category/list?page=1&size=10001
+
+###
+
+GET http://localhost:8080/category/all
+
+###
+
+GET http://localhost:8080/category/all?page=1&size=100
+
+###
