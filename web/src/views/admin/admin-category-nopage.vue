@@ -114,6 +114,20 @@
           slots: { customRender: 'action' }
         }
       ];
+      /**
+       * 一级分类树，children属性就是二级分类
+       * [{
+       *   id: "",
+       *   name: "",
+       *   children: [{
+       *     id: "",
+       *     name: "",
+       *   }]
+       * }]
+       */
+
+      const level1 = ref(); // 一级分类树，children属性就是二级分类
+      level1.value = [];
 
       /**
        * 数据查询
@@ -126,7 +140,11 @@
           const data = response.data;
           if(data.success){
             categorys.value = data.content;
+            console.log("原始数组：", categorys.value);
 
+            level1.value = [];
+            level1.value = tools.array2Tree(categorys.value, 0);
+            console.log("树形结构：", level1);
           }else {
             message.error(data.message);
           }
@@ -194,6 +212,7 @@
 
 
       return {
+        level1,
         categorys,
         columns,
         loading,
