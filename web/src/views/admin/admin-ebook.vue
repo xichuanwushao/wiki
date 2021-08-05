@@ -72,10 +72,11 @@
         <a-input v-model:value="ebook.name" />
       </a-form-item>
       <a-form-item label="分类一">
-        <a-input v-model:value="ebook.category1Id" />
-      </a-form-item>
-      <a-form-item label="分类二">
-        <a-input v-model:value="ebook.category2Id" />
+        <a-cascader
+                v-model:value="categoryIds"
+                :field-names="{ label: 'name', value: 'id', children: 'children' }"
+                :options="level1"
+        />
       </a-form-item>
       <a-form-item label="描述">
         <a-input v-model:value="ebook.description"  type="textarea" />
@@ -179,7 +180,11 @@
           size: pagination.pageSize
         });
       };
-
+      // -------- 表单 ---------
+      /**
+       * 数组，[100, 101]对应：前端开发 / Vue
+       */
+      const categoryIds = ref();
       const ebook = ref();
       const modalText = ref<string>('Content of the modal');
       const modalVisible = ref<boolean>(false);
@@ -191,7 +196,8 @@
         //   modalVisible.value = false;
         //   modalLoading.value = false;
         // }, 2000);
-
+        ebook.value.category1Id = categoryIds.value[0];
+        ebook.value.category2Id = categoryIds.value[1];
         axios.post("/ebook/save",ebook.value).then((response) => {
           modalLoading.value = false;//loading的效果只要后端有返回的时候就应该去除掉 而不是返回成功的时候再去除掉
           const data = response.data;
@@ -213,6 +219,7 @@
       const edit = (record : any) => {
         modalVisible.value = true;
         ebook.value = tools.copy(record);
+        categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id];
       };
       /***
        * 新增
@@ -238,8 +245,35 @@
           }
         });
       };
+      const level1 =  ref();
+      /**
+       * 查询所有分类
+       **/
+      const handleQueryCategory = () => {
+        loading.value = true;
+        axios.get("/category/all").then((response) => {
+          loading.value = false;
+          const data = response.data;
+          if (data.success) {
+            const categorys = data.content;
+            console.log("原始数组：", categorys);
 
+            level1.value = [];
+            level1.value = tools.array2Tree(categorys, 0);
+            console.log("树形结构：", level1.value);
+
+            // 加载完分类后，再加载电子书，否则如果分类树加载很慢，则电子书渲染会报错
+            handleQuery({
+              page: 1,
+              size: pagination.value.pageSize,
+            });
+          } else {
+            message.error(data.message);
+          }
+        });
+      };
       onMounted(() => {
+        handleQueryCategory();
         handleQuery({
           page : 1,
           size : pagination.value.pageSize,
@@ -265,6 +299,8 @@
 
         handleQuery,
         param,
+        level1,
+        categoryIds,
       }
     }
   });
