@@ -80,13 +80,17 @@ export default defineComponent({
     const ebooks = ref();
     const ebooks2 = reactive({books2:[]})
 
+    let categoryId2 = 0;
+
+
     onMounted( ()=> {
         handleQueryCategory();
         console.log("onMounted");
         axios.get("/ebook/list", {
           params : {
             page:1,
-            size :100
+            size :100,
+            categoryId2 :categoryId2,
           }
         } ).then((response) => {
         const data = response.data;
@@ -125,6 +129,7 @@ export default defineComponent({
      if(value.key == 'welcome' ){
        isShowWelcome.value = true;
      }else{
+       categoryId2 = value.key;
        isShowWelcome.value = false;
      }
     };
