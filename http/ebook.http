@@ -47,3 +47,7 @@ POST http://localhost:8080/ebook/save
 ###
 
 GET http://localhost:8080/ebook/list?page=1&size=10001
+
+###
+
+GET http://localhost:8080/ebook/list?page=1&size=100&categoryId2=102

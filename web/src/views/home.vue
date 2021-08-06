@@ -81,29 +81,31 @@ export default defineComponent({
     const ebooks2 = reactive({books2:[]})
 
     let categoryId2 = 0;
-
+    const isShowWelcome = ref(true);
 
     onMounted( ()=> {
         handleQueryCategory();
-        console.log("onMounted");
-        axios.get("/ebook/list", {
-          params : {
-            page:1,
-            size :100,
-            categoryId2 :categoryId2,
-          }
-        } ).then((response) => {
-        const data = response.data;
-        ebooks.value = data.content.list;
-        ebooks2.books2 = data.content.list;
-
-      })
     })
     const level1 =  ref();
     let categorys: any;
     /**
      * 查询所有分类
      **/
+    const handleQueryEbook = () => {
+      console.log("onMounted");
+      axios.get("/ebook/list", {
+        params : {
+          page:1,
+          size :100,
+          categoryId2 :categoryId2,
+        }
+      } ).then((response) => {
+        const data = response.data;
+        ebooks.value = data.content.list;
+        ebooks2.books2 = data.content.list;
+
+      });
+    };
     const handleQueryCategory = () => {
       axios.get("/category/all").then((response) => {
         const data = response.data;
@@ -122,7 +124,7 @@ export default defineComponent({
         }
       });
     };
-    const isShowWelcome = ref(true);
+
 
     const handleClick = (value : any) => {
       console.log("menu click",value)
@@ -131,12 +133,13 @@ export default defineComponent({
      }else{
        categoryId2 = value.key;
        isShowWelcome.value = false;
+       handleQueryEbook();
      }
     };
 
     onMounted(() => {
       handleQueryCategory();
-      // handleQueryEbook();
+      handleQueryEbook();
     });
 
     return {

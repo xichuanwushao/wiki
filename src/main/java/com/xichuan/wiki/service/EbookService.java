@@ -40,6 +40,9 @@ public class EbookService {
         if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
             criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         }
+        if(!ObjectUtils.isEmpty(ebookQueryReq.getCategoryId2())){
+            criteria.andCategory2IdEqualTo(ebookQueryReq.getCategoryId2());
+        }
 
         if(ebookQueryReq.getPage()!=0 && ebookQueryReq.getSize()!=0) {
             PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
