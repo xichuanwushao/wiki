@@ -63,7 +63,20 @@
       <a-form-item label="名称">
         <a-input v-model:value="doc.name" />
       </a-form-item>
-
+      <a-form-item label="名称">
+        <a-tree-select
+                v-model:value="value"
+                style="width: 100%"
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                :tree-data="treeData"
+                placeholder="Please select"
+                tree-default-expand-all
+        >
+          <template #title="{ key, value }">
+            <span style="color: #08c" v-if="key === '0-0-1'">Child Node1 {{ value }}</span>
+          </template>
+        </a-tree-select>
+      </a-form-item>
       <a-form-item label="父分类">
         <a-select
                 v-model:value="doc.parent"
