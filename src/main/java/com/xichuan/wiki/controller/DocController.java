@@ -62,9 +62,9 @@ public class DocController {
      * @return
      */
     @DeleteMapping("/delete/{id}")
-    public CommonResp delete(@PathVariable Long id) {
+    public CommonResp delete(@PathVariable String id) {
         CommonResp resp = new CommonResp<>();
-        docService.delete(id);
+        //docService.delete(id);
         return resp;
     }
 }
