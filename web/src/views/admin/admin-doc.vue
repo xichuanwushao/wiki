@@ -51,6 +51,7 @@
           </a-space>
         </template>
       </a-table>
+      <div id="content"></div>
     </a-layout-content>
   </a-layout>
   <a-modal
@@ -104,6 +105,7 @@
   import {Tool } from "@/util/tool";
   import {useRoute} from "vue-router";
   import ExclamationCircleOutlined from "@ant-design/icons-vue/ExclamationCircleOutlined";
+  import E from 'wangeditor';
   export default defineComponent({
     name: 'AdminDoc',
     setup() {
@@ -332,6 +334,8 @@
       };
       onMounted(() => {
         handleQuery();
+        const editor = new E('#content');
+        editor.create();
       });
 
 
