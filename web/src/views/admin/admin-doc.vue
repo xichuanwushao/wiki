@@ -51,7 +51,7 @@
           </a-space>
         </template>
       </a-table>
-      <div id="content"></div>
+
     </a-layout-content>
   </a-layout>
   <a-modal
@@ -92,7 +92,9 @@
       <a-form-item label="顺序">
         <a-input v-model:value="doc.sort" />
       </a-form-item>
-
+      <a-form-item label="顺序">
+        <div id="content"></div>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -191,6 +193,7 @@
       const modalText = ref<string>('Content of the modal');
       const modalVisible = ref<boolean>(false);
       const modalLoading = ref<boolean>(false);
+      const editor = new E('#content');
       const handleModalOk = () => {
         // modalText.value = 'The modal will be closed after two seconds';
         modalLoading.value = true;
@@ -254,6 +257,9 @@
 
         // 为选择树添加一个"无" unshift是往数组前面添加一个元素 而push是往数组后面添加一个元素
         treeSelectData.value.unshift({id: 0, name: '无'});
+        setTimeout(function () {
+          editor.create();
+        },100);
       };
       /***
        * 新增
@@ -266,6 +272,9 @@
 
         // 为选择树添加一个"无"
         treeSelectData.value.unshift({id: 0, name: '无'});
+        setTimeout(function () {
+          editor.create();
+        },100);
       };
 
       // const ids : Array<string> = [];
@@ -297,7 +306,6 @@
             });
           },
         });
-
       };
 
       /**
@@ -334,8 +342,7 @@
       };
       onMounted(() => {
         handleQuery();
-        const editor = new E('#content');
-        editor.create();
+
       });
 
 
