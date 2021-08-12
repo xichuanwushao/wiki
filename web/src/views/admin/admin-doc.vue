@@ -266,14 +266,17 @@
         treeSelectData.value.unshift({id: 0, name: '无'});
       };
 
+      const ids : Array<string> = [];
       /***
        * 删除
        */
       //const handleDelete = ( id : number ) => {
       const handleDelete = (id: number) => {
+        console.log("删除ID "+level1.value,id);
+        setDeleteIds(level1.value,id);
         console.log("删除ID "+id);
         //axios.delete("/doc/delete/1,2,3"+id).then((response) => {
-        axios.delete("/doc/delete/1,2,3").then((response) => {
+        axios.delete("/doc/delete/"+ids.join(",")).then((response) => {
           const data = response.data;
           if(data.success){
             handleQuery();
@@ -281,6 +284,36 @@
         });
       };
 
+      /**
+       * 将某节点及其子孙节点全部置为disabled
+       */
+      const setDeleteIds = (treeSelectData: any, id: any) => {
+        // console.log(treeSelectData, id);
+        // 遍历数组，即遍历某一层节点
+        for (let i = 0; i < treeSelectData.length; i++) {
+          const node = treeSelectData[i];
+          if (node.id === id) {
+            // 如果当前节点就是目标节点
+            console.log("disabled", node);
+            // 将目标节点设置为disabled
+            // node.disabled = true;
+            ids.push(id);
+            // 遍历所有子节点，将所有子节点全部都加上disabled
+            const children = node.children;
+            if (Tool.isNotEmpty(children)) {
+              for (let j = 0; j < children.length; j++) {
+                setDeleteIds(children, children[j].id)
+              }
+            }
+          } else {
+            // 如果当前节点不是目标节点，则到其子节点再找找看。
+            const children = node.children;
+            if (Tool.isNotEmpty(children)) {
+              setDeleteIds(children, id);
+            }
+          }
+        }
+      };
       onMounted(() => {
         handleQuery();
       });
