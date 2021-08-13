@@ -4,7 +4,7 @@
     <a-layout-content
             :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <a-row>
+      <a-row :gutter="24">
         <a-col :span="8">
           <p>
             <a-form
@@ -31,12 +31,12 @@
                   :pagination="false"
                   :loading="loading"
           >
-            <template #cover="{ text: cover }">
-              <img v-if="cover" :src="cover" alt="avatar" />
+            <template #name="{ text, record }">
+              {{record.sort}} {{text}}
             </template>
             <template v-slot:action="{ text, record }">
               <a-space size="small">
-                <a-button type="primary"  @click="edit(record)" >
+                <a-button type="primary"  @click="edit(record)"  size="small">
                   编辑
                 </a-button>
                 <a-popconfirm
@@ -45,7 +45,7 @@
                         cancel-text="取消"
                         @confirm="handleDelete(record.id)"
                 >
-                  <a-button type="danger">
+                  <a-button type="danger"  size="small">
                     删除
                   </a-button>
                 </a-popconfirm>
@@ -55,11 +55,20 @@
           </a-table>
         </a-col>
         <a-col :span="16">
-          <a-form :model="doc" :label-col="{span:6 }" :wrapper-col="{ span: 18 }">
-            <a-form-item label="名称">
-              <a-input v-model:value="doc.name" />
+          <p>
+            <a-form :model="doc" layout="vertical">
+              <a-form-item >
+                <a-button type="primary" @click="handleSave()">
+                  保存
+                </a-button>
+              </a-form-item>
+            </a-form>
+          </p>
+          <a-form :model="doc" layout="vertical">
+            <a-form-item >
+              <a-input v-model:value="doc.name"  placeholder="名称"/>
             </a-form-item>
-            <a-form-item label="父文档">
+            <a-form-item >
               <a-tree-select
                       v-model:value="doc.parent"
                       style="width: 100%"
@@ -71,23 +80,10 @@
               >
               </a-tree-select>
             </a-form-item>
-            <!--      <a-form-item label="父分类">-->
-            <!--        <a-select-->
-            <!--                v-model:value="doc.parent"-->
-            <!--                ref="select"-->
-            <!--        >-->
-            <!--          <a-select-option value="0">无</a-select-option>-->
-            <!--          <a-select-option  v-for = "c in level1" :key="c.id"  :value="c.id" :disabled="doc.id === c.id">-->
-            <!--                {{c.name}}-->
-            <!--          </a-select-option>-->
-
-            <!--        </a-select>-->
-            <!--      </a-form-item>-->
-
-            <a-form-item label="顺序">
-              <a-input v-model:value="doc.sort" />
+            <a-form-item >
+              <a-input v-model:value="doc.sort"  placeholder="顺序" />
             </a-form-item>
-            <a-form-item label="顺序">
+            <a-form-item >
               <div id="content"></div>
             </a-form-item>
           </a-form>
@@ -140,15 +136,8 @@
 
         {
           title: '名称',
-          dataIndex: 'name'
-        },{
-          title: '父分类',
-          key: 'parent',
-          dataIndex: 'parent'
-        },
-        {
-          title: '顺序',
-          dataIndex: 'sort'
+          dataIndex: 'name',
+          slots: { customRender: 'name' }
         },
         {
           title: 'Action',
@@ -202,7 +191,7 @@
       const modalVisible = ref<boolean>(false);
       const modalLoading = ref<boolean>(false);
       const editor = new E('#content');
-      const handleModalOk = () => {
+      const handleSave = () => {
         // modalText.value = 'The modal will be closed after two seconds';
         modalLoading.value = true;
         // setTimeout(() => {
@@ -265,9 +254,7 @@
 
         // 为选择树添加一个"无" unshift是往数组前面添加一个元素 而push是往数组后面添加一个元素
         treeSelectData.value.unshift({id: 0, name: '无'});
-        setTimeout(function () {
-          editor.create();
-        },100);
+
       };
       /***
        * 新增
@@ -280,9 +267,7 @@
 
         // 为选择树添加一个"无"
         treeSelectData.value.unshift({id: 0, name: '无'});
-        setTimeout(function () {
-          editor.create();
-        },100);
+
       };
 
       // const ids : Array<string> = [];
@@ -363,7 +348,7 @@
 
         modalVisible,
         modalLoading,
-        handleModalOk,
+        handleSave,
 
         edit,
         add,
