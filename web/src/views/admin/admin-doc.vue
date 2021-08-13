@@ -25,11 +25,13 @@
             </a-form>
           </p>
           <a-table
+                  v-if="level1.length > 0"
                   :columns="columns"
                   :row-key="record => record.id"
                   :data-source="level1"
                   :pagination="false"
                   :loading="loading"
+                  :defaultExpandAllRows="true"
           >
             <template #name="{ text, record }">
               {{record.sort}} {{text}}
@@ -159,6 +161,7 @@
 
       const level1 = ref(); // 一级分类树，children属性就是二级分类
       level1.value = [];
+      // level1.value = [];
 
       /**
        * 数据查询
