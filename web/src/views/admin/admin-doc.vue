@@ -4,6 +4,10 @@
     <a-layout-content
             :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
+      <a-row>
+        <a-col :span="12">col-12</a-col>
+        <a-col :span="12">col-12</a-col>
+      </a-row>
       <p>
         <a-form
                 layout="inline"
