@@ -2,8 +2,10 @@ package com.xichuan.wiki.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xichuan.wiki.domain.Content;
 import com.xichuan.wiki.domain.Doc;
 import com.xichuan.wiki.domain.DocExample;
+import com.xichuan.wiki.mapper.ContentMapper;
 import com.xichuan.wiki.mapper.DocMapper;
 import com.xichuan.wiki.req.DocQueryReq;
 import com.xichuan.wiki.req.DocSaveReq;
@@ -23,6 +25,8 @@ import java.util.List;
 public class DocService {
     @Resource
     private DocMapper docMapper;
+    @Resource
+    private ContentMapper contentMapper;
     @Resource
     private SnowFlake snowFlake;
 
@@ -76,11 +80,15 @@ public class DocService {
      */
     public void save(DocSaveReq docSaveReq) {
         Doc doc = CopyUtil.copy(docSaveReq,Doc.class);
+        Content content = CopyUtil.copy(docSaveReq,Content.class);
         if(ObjectUtils.isEmpty(doc.getId())){
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
+            content.setId(doc.getId());
+            contentMapper.insert(content);
         }else{
             docMapper.updateByPrimaryKey(doc);
+            contentMapper.updateByPrimaryKeyWithBLOBs(content);
         }
     }
 
