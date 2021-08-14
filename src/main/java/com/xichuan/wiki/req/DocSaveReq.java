@@ -1,6 +1,8 @@
 package com.xichuan.wiki.req;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 public class DocSaveReq {
     private Long id;
@@ -20,7 +22,7 @@ public class DocSaveReq {
 
     private Integer voteCount;
 
-    @NotNull(message = "【内容】不能为空")
+    @NotEmpty(message = "【内容】不能为空")
     private String content;
 
 
