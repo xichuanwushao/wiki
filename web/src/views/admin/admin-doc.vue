@@ -220,7 +220,8 @@
           modalLoading.value = false;//loading的效果只要后端有返回的时候就应该去除掉 而不是返回成功的时候再去除掉
           const data = response.data;
           if(data.success){
-            modalVisible.value = false;
+            //modalVisible.value = false;
+            message.info("保存成功！")
             handleQuery();
           }else{
               message.error(data.message);
@@ -263,6 +264,8 @@
        * @param record
        */
       const edit = (record : any) => {
+        //编辑时先清空富文本框
+        editor.txt.html("");
         modalVisible.value = true;
         doc.value = tools.copy(record);
         handleQueryContent();
@@ -278,6 +281,8 @@
        * 新增
        */
       const add = () => {
+        //编辑时先清空富文本框
+        editor.txt.html("");
         modalVisible.value = true;
         doc.value = { ebookId: route.query.ebookId};
 
