@@ -185,7 +185,19 @@
           }
         });
       };
-
+      /**
+       * 内容查询
+       **/
+      const handleQueryContent = () => {
+        axios.get("/doc/find-content/"+doc.value.id).then((response) => {
+          const data = response.data;
+          if(data.success){
+            editor.txt.html(data.content);
+          }else {
+            message.error(data.message);
+          }
+        });
+      };
       //因为树选择组件的属性状态 会随着当前编辑节点而变化 所以单独声明一个响应式变量 而不使用level1
       const treeSelectData = ref();
       treeSelectData.value = [];
@@ -252,6 +264,7 @@
       const edit = (record : any) => {
         modalVisible.value = true;
         doc.value = tools.copy(record);
+        handleQueryContent();
         // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
         treeSelectData.value = Tool.copy(level1.value);
         setDisable(treeSelectData.value, record.id);
