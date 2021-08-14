@@ -207,6 +207,7 @@
       const modalVisible = ref<boolean>(false);
       const modalLoading = ref<boolean>(false);
       const editor = new E('#content');
+      editor.config.zIndex = 0;//避免下拉框被富文本挡住
       const handleSave = () => {
         // modalText.value = 'The modal will be closed after two seconds';
         modalLoading.value = true;
