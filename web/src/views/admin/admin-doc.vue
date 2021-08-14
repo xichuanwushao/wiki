@@ -132,6 +132,10 @@
 
       const loading = ref(false);
 
+      //因为树选择组件的属性状态 会随着当前编辑节点而变化 所以单独声明一个响应式变量 而不使用level1
+      const treeSelectData = ref();
+      treeSelectData.value = [];
+
       const columns = [
 
 
@@ -180,6 +184,10 @@
             level1.value = [];
             level1.value = tools.array2Tree(docs.value, 0);
             console.log("树形结构：", level1);
+            //父文档下拉框初始化 相当于点击新增
+            treeSelectData.value = Tool.copy(level1.value);
+            // 为选择树添加一个"无" unshift是往数组前面添加一个元素 而push是往数组后面添加一个元素
+            treeSelectData.value.unshift({id: 0, name: '无'});
           }else {
             message.error(data.message);
           }
@@ -198,9 +206,8 @@
           }
         });
       };
-      //因为树选择组件的属性状态 会随着当前编辑节点而变化 所以单独声明一个响应式变量 而不使用level1
-      const treeSelectData = ref();
-      treeSelectData.value = [];
+      //-------------表单------------------
+
       const doc = ref();
       doc.value={};
       const modalText = ref<string>('Content of the modal');
