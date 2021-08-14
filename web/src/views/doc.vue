@@ -23,26 +23,13 @@
   import axios from 'axios';
   import {message, Modal} from 'ant-design-vue';
   import {Tool as tools} from "@/util/tool";
-  import {Tool } from "@/util/tool";
   import {useRoute} from "vue-router";
-  import ExclamationCircleOutlined from "@ant-design/icons-vue/ExclamationCircleOutlined";
-  import E from 'wangeditor';
   export default defineComponent({
     name: 'AdminDoc',
     setup() {
       const route = useRoute();
       const docs = ref();
-      /**
-       * 一级分类树，children属性就是二级分类
-       * [{
-       *   id: "",
-       *   name: "",
-       *   children: [{
-       *     id: "",
-       *     name: "",
-       *   }]
-       * }]
-       */
+
 
       const level1 = ref(); // 一级分类树，children属性就是二级分类
       level1.value = [];
@@ -52,7 +39,7 @@
        * 数据查询
        **/
       const handleQuery = () => {
-        axios.get("/doc/all").then((response) => {
+        axios.get("/doc/all/"+route.query.ebookId).then((response) => {
           const data = response.data;
           if(data.success){
             docs.value = data.content;
