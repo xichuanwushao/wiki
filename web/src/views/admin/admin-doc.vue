@@ -216,7 +216,9 @@
       //-------------表单------------------
 
       const doc = ref();
-      doc.value={};
+      doc.value = {
+        ebookId: route.query.ebookId
+      };
       const modalText = ref<string>('Content of the modal');
       const modalVisible = ref<boolean>(false);
       const modalLoading = ref<boolean>(false);
