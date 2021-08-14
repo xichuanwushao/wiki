@@ -1,0 +1,9 @@
+###
+
+GET http://localhost:8080/doc/find-content/1
+
+###
+
+DELETE http://localhost:8080/doc/delete/1
+
+

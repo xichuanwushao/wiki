@@ -69,4 +69,17 @@ public class DocController {
         docService.delete(lists);
         return resp;
     }
+
+    /***
+     * 查询内容接口
+     * @param id
+     * @return
+     */
+    @GetMapping("/find-content/{id}")
+    public CommonResp findContent(@PathVariable Long id) {
+        CommonResp resp = new CommonResp<>();
+        String content = docService.findContent(id);
+        resp.setContent(content);
+        return resp;
+    }
 }
