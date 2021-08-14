@@ -189,7 +189,8 @@
       //因为树选择组件的属性状态 会随着当前编辑节点而变化 所以单独声明一个响应式变量 而不使用level1
       const treeSelectData = ref();
       treeSelectData.value = [];
-      const doc = ref({});
+      const doc = ref();
+      doc.value={};
       const modalText = ref<string>('Content of the modal');
       const modalVisible = ref<boolean>(false);
       const modalLoading = ref<boolean>(false);
@@ -201,7 +202,7 @@
         //   modalVisible.value = false;
         //   modalLoading.value = false;
         // }, 2000);
-
+        doc.value.content = editor.txt.html();
         axios.post("/doc/save",doc.value).then((response) => {
           modalLoading.value = false;//loading的效果只要后端有返回的时候就应该去除掉 而不是返回成功的时候再去除掉
           const data = response.data;

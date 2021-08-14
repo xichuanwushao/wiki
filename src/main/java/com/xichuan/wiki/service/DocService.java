@@ -88,7 +88,10 @@ public class DocService {
             contentMapper.insert(content);
         }else{
             docMapper.updateByPrimaryKey(doc);
-            contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            if(count<1){
+                contentMapper.insert(content);
+            }
         }
     }
 
