@@ -63,7 +63,7 @@ public class UserService {
         User user = CopyUtil.copy(userSaveReq,User.class);
         if(ObjectUtils.isEmpty(user.getId())){
             User userDB = selectByLoginName(user.getLoginName());
-            if(!ObjectUtils.isEmpty(userDB)){
+            if(ObjectUtils.isEmpty(userDB)){
                 user.setId(snowFlake.nextId());
                 userMapper.insert(user);
             }else {
@@ -71,7 +71,7 @@ public class UserService {
                 throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
             }
         }else{
-            // 更新
+            // 更新 更新时发现loginName是null所以不会去更新loginName
             user.setLoginName(null);
             //如果这个user里面属性有值我才去更新 没有值我就不用去跟新这个字段
             userMapper.updateByPrimaryKeySelective(user);

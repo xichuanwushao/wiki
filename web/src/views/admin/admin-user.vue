@@ -82,6 +82,9 @@
   import axios from 'axios';
   import {message} from "ant-design-vue";
   import {Tool as tools} from "@/util/tool";
+  //用第三方js 用里面的一些变量 在这个文件定义一下 告诉这个文件 hexMd5 KEY存在
+  declare let hexMd5:any;
+  declare let KEY:any;
 
 
   export default defineComponent({
@@ -171,6 +174,7 @@
         //   modalVisible.value = false;
         //   modalLoading.value = false;
         // }, 2000);
+        user.value.password = hexMd5(user.value.password+KEY);
         axios.post("/user/save",user.value).then((response) => {
           modalLoading.value = false;//loading的效果只要后端有返回的时候就应该去除掉 而不是返回成功的时候再去除掉
           const data = response.data;
