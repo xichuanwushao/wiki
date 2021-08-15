@@ -71,7 +71,10 @@ public class UserService {
                 throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
             }
         }else{
-            userMapper.updateByPrimaryKey(user);
+            // 更新
+            user.setLoginName(null);
+            //如果这个user里面属性有值我才去更新 没有值我就不用去跟新这个字段
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
     public void delete(Long id) {
