@@ -1,6 +1,7 @@
 package com.xichuan.wiki.controller;
 
 import com.xichuan.wiki.req.UserQueryReq;
+import com.xichuan.wiki.req.UserResetPasswordReq;
 import com.xichuan.wiki.req.UserSaveReq;
 import com.xichuan.wiki.resp.CommonResp;
 import com.xichuan.wiki.resp.UserQueryResp;
@@ -56,4 +57,19 @@ public class UserController {
         userService.delete(id);
         return resp;
     }
+
+    /***
+     * 重置密码
+     * @param userSaveReq
+     * @return
+     */
+    @PostMapping("/reset-password")
+    public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq userResetPasswordReq) {
+        userResetPasswordReq.setPassword(DigestUtils.md5DigestAsHex(userResetPasswordReq.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(userResetPasswordReq);
+        return resp;
+    }
+
+
 }

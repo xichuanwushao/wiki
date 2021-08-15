@@ -38,6 +38,9 @@
 
         <template v-slot:action="{ text, record }">
           <a-space size="small">
+            <a-button type="primary"  @click="resetPassword(record)" >
+              重置密码
+            </a-button>
             <a-button type="primary"  @click="edit(record)" >
                 编辑
             </a-button>
@@ -71,6 +74,19 @@
         <a-input v-model:value="user.name" />
       </a-form-item>
       <a-form-item label="密码" v-show="!user.id" >
+        <a-input v-model:value="user.password"  type="password" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
+
+  <a-modal
+          title="重置密码"
+          v-model:visible="resetModalVisible"
+          :confirm-loading="resetModalLoading"
+          @ok="handleResetModalOk"
+  >
+    <a-form :model="user" :label-col="{span:6 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="密码"  >
         <a-input v-model:value="user.password"  type="password" />
       </a-form-item>
     </a-form>
@@ -224,7 +240,37 @@
         });
       };
 
-
+      // --------密码重置---------
+      /**
+       * 数组，[100, 101]对应：前端开发 / Vue
+       */
+      const resetModalVisible = ref<boolean>(false);
+      const resetModalLoading = ref<boolean>(false);
+      const handleResetModalOk = () => {
+        resetModalLoading.value = true;
+        user.value.password = hexMd5(user.value.password+KEY);
+        axios.post("/user/reset-password",user.value).then((response) => {
+          resetModalLoading.value = false;//loading的效果只要后端有返回的时候就应该去除掉 而不是返回成功的时候再去除掉
+          const data = response.data;
+          if(data.success){
+            resetModalVisible.value = false;
+            handleQuery({
+              page : pagination.value.current,
+              size : pagination.value.pageSize,
+            });
+          }else{
+            message.error(data.message);
+          }
+        });
+      };
+      /***
+       * 编辑
+       * @param record
+       */
+      const resetPassword = (record : any) => {
+        resetModalVisible.value = true;
+        user.value = tools.copy(record);
+      };
 
       onMounted(() => {
         handleQuery({
@@ -255,6 +301,10 @@
 
         categoryIds,
 
+        resetModalVisible,
+        resetModalLoading,
+        handleResetModalOk,
+        resetPassword,
       }
     }
   });

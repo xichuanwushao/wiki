@@ -8,6 +8,7 @@ import com.xichuan.wiki.exception.BusinessException;
 import com.xichuan.wiki.exception.BusinessExceptionCode;
 import com.xichuan.wiki.mapper.UserMapper;
 import com.xichuan.wiki.req.UserQueryReq;
+import com.xichuan.wiki.req.UserResetPasswordReq;
 import com.xichuan.wiki.req.UserSaveReq;
 import com.xichuan.wiki.resp.UserQueryResp;
 import com.xichuan.wiki.resp.PageResp;
@@ -95,5 +96,15 @@ public class UserService {
         }else {
             return userList.get(0);
         }
+    }
+
+
+    /***
+     * 重置密码
+     * @param userResetPasswordReq
+     */
+    public void resetPassword(UserResetPasswordReq userResetPasswordReq) {
+        User user = CopyUtil.copy(userResetPasswordReq,User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }
