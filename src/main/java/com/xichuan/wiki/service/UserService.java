@@ -73,6 +73,7 @@ public class UserService {
         }else{
             // 更新 更新时发现loginName是null所以不会去更新loginName
             user.setLoginName(null);
+            user.setPassword(null);
             //如果这个user里面属性有值我才去更新 没有值我就不用去跟新这个字段
             userMapper.updateByPrimaryKeySelective(user);
         }
