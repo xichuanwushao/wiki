@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xichuan.wiki.domain.User;
 import com.xichuan.wiki.domain.UserExample;
+import com.xichuan.wiki.exception.BusinessException;
+import com.xichuan.wiki.exception.BusinessExceptionCode;
 import com.xichuan.wiki.mapper.UserMapper;
 import com.xichuan.wiki.req.UserQueryReq;
 import com.xichuan.wiki.req.UserSaveReq;
@@ -14,9 +16,11 @@ import com.xichuan.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -58,13 +62,34 @@ public class UserService {
     public void save(UserSaveReq userSaveReq) {
         User user = CopyUtil.copy(userSaveReq,User.class);
         if(ObjectUtils.isEmpty(user.getId())){
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            User userDB = selectByLoginName(user.getLoginName());
+            if(!ObjectUtils.isEmpty(userDB)){
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+            }else {
+                //用户名已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
         }else{
             userMapper.updateByPrimaryKey(user);
         }
     }
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    public User selectByLoginName(String loginName){
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+
+        if(!ObjectUtils.isEmpty(loginName)){
+            criteria.andLoginNameEqualTo( loginName);
+        }
+        List<User> userList  = userMapper.selectByExample(userExample);
+        if(CollectionUtils.isEmpty(userList)){
+            return null;
+        }else {
+            return userList.get(0);
+        }
     }
 }
