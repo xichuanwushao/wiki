@@ -86,7 +86,7 @@
           @ok="handleResetModalOk"
   >
     <a-form :model="user" :label-col="{span:6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="密码"  >
+      <a-form-item label="新密码"  >
         <a-input v-model:value="user.password"  type="password" />
       </a-form-item>
     </a-form>
@@ -270,6 +270,7 @@
       const resetPassword = (record : any) => {
         resetModalVisible.value = true;
         user.value = tools.copy(record);
+        user.value.password = null;
       };
 
       onMounted(() => {
