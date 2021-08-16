@@ -7,9 +7,11 @@ import com.xichuan.wiki.domain.UserExample;
 import com.xichuan.wiki.exception.BusinessException;
 import com.xichuan.wiki.exception.BusinessExceptionCode;
 import com.xichuan.wiki.mapper.UserMapper;
+import com.xichuan.wiki.req.UserLoginReq;
 import com.xichuan.wiki.req.UserQueryReq;
 import com.xichuan.wiki.req.UserResetPasswordReq;
 import com.xichuan.wiki.req.UserSaveReq;
+import com.xichuan.wiki.resp.UserLoginResp;
 import com.xichuan.wiki.resp.UserQueryResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.util.CopyUtil;
@@ -18,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -106,5 +109,29 @@ public class UserService {
     public void resetPassword(UserResetPasswordReq userResetPasswordReq) {
         User user = CopyUtil.copy(userResetPasswordReq,User.class);
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /***
+     * 登录
+     * @param userLoginReq
+     */
+    public UserLoginResp login(UserLoginReq userLoginReq) {
+        User userDB = selectByLoginName(userLoginReq.getLoginName());
+        if(ObjectUtils.isEmpty(userDB)){
+            //用户名不存在
+            log.info("用户名不存在, {}", userLoginReq.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }else {
+            if(userDB.getPassword().equals(userLoginReq.getPassword())){
+            //登录成功
+                UserLoginResp userLoginResp = CopyUtil.copy(userDB, UserLoginResp.class);
+                return  userLoginResp;
+            }else{
+             //密码不对
+                log.info("密码不对, 输入密码：{}, 数据库密码：{}", userLoginReq.getPassword(), userDB.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+
+        }
     }
 }

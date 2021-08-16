@@ -1,9 +1,11 @@
 package com.xichuan.wiki.controller;
 
+import com.xichuan.wiki.req.UserLoginReq;
 import com.xichuan.wiki.req.UserQueryReq;
 import com.xichuan.wiki.req.UserResetPasswordReq;
 import com.xichuan.wiki.req.UserSaveReq;
 import com.xichuan.wiki.resp.CommonResp;
+import com.xichuan.wiki.resp.UserLoginResp;
 import com.xichuan.wiki.resp.UserQueryResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.service.UserService;
@@ -71,5 +73,17 @@ public class UserController {
         return resp;
     }
 
-
+    /***
+     * 登录
+     * @param userLoginReq
+     * @return
+     */
+    @PostMapping("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginReq userLoginReq) {
+        userLoginReq.setPassword(DigestUtils.md5DigestAsHex(userLoginReq.getPassword().getBytes()));
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
+        UserLoginResp userLoginResp = userService.login(userLoginReq);
+        resp.setContent(userLoginResp);
+        return resp;
+    }
 }
