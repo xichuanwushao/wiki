@@ -1,5 +1,6 @@
 package com.xichuan.wiki.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.xichuan.wiki.req.UserLoginReq;
 import com.xichuan.wiki.req.UserQueryReq;
 import com.xichuan.wiki.req.UserResetPasswordReq;
@@ -9,11 +10,16 @@ import com.xichuan.wiki.resp.UserLoginResp;
 import com.xichuan.wiki.resp.UserQueryResp;
 import com.xichuan.wiki.resp.PageResp;
 import com.xichuan.wiki.service.UserService;
+import com.xichuan.wiki.util.SnowFlake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +28,13 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Resource
+    private SnowFlake snowFlake;
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     /***
      * 参数使用实体进行模糊查询 并返回指定类型实体
      * @param userQueryReq
@@ -83,6 +96,10 @@ public class UserController {
         userLoginReq.setPassword(DigestUtils.md5DigestAsHex(userLoginReq.getPassword().getBytes()));
         CommonResp<UserLoginResp> resp = new CommonResp<>();
         UserLoginResp userLoginResp = userService.login(userLoginReq);
+        Long token = snowFlake.nextId();
+        userLoginResp.setToken(token.toString());
+        log.info("生成单点登录token{},并放入redis中", token);
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(userLoginResp), 3600*24, TimeUnit.SECONDS);
         resp.setContent(userLoginResp);
         return resp;
     }
