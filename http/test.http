@@ -20,3 +20,13 @@ name=TEST
 ###
 //测试mybatis集成示范代码
 GET http://localhost:8080/test/list
+###
+GET http://localhost:8080/test/redis/set/123/test
+Accept: application/json
+
+###
+
+GET http://localhost:8080/redis/get/83115903838982144
+Accept: application/json
+
+###
