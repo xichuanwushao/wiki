@@ -75,7 +75,7 @@ public class UserController {
 
     /***
      * 重置密码
-     * @param userSaveReq
+     * @param userResetPasswordReq
      * @return
      */
     @PostMapping("/reset-password")
@@ -101,6 +101,20 @@ public class UserController {
         log.info("生成单点登录token{},并放入redis中", token);
         redisTemplate.opsForValue().set(token, JSON.toJSONString(userLoginResp), 3600*24, TimeUnit.SECONDS);
         resp.setContent(userLoginResp);
+        return resp;
+    }
+
+
+    /***
+     * 删除接口
+     * @param token
+     * @return
+     */
+    @GetMapping("/logout/{token}")
+    public CommonResp delete(@PathVariable String token) {
+        CommonResp resp = new CommonResp<>();
+        redisTemplate.delete(token);
+        log.info("从redis中删除token：{}", token);
         return resp;
     }
 }
