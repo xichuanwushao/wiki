@@ -11,17 +11,17 @@
                 <router-link to="/">首页</router-link>
             </a-menu-item>
             <a-menu-item key="/admin/user" >
-                <router-link to="/admin/user">用户管理</router-link>
+                <router-link to="/admin/user" :style="user.id? {} : {display:'none'}" >用户管理</router-link>
             </a-menu-item>
             <a-menu-item key="/admin/ebook">
-                <router-link to="/admin/ebook">电子书管理</router-link>
+                <router-link to="/admin/ebook" :style="user.id? {} : {display:'none'}" >电子书管理</router-link>
             </a-menu-item>
             <!--
             <a-menu-item key="/admin/category">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
             -->
-            <a-menu-item key="/admin/admin-category-nopage">
+            <a-menu-item key="/admin/admin-category-nopage" :style="user.id? {} : {display:'none'}" >
                 <router-link to="/admin/admin-category-nopage">分类管理</router-link>
             </a-menu-item>
             <a-menu-item key="/about">
