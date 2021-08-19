@@ -7,6 +7,8 @@ import AdminCategoryNoPage from '../views/admin/admin-category-nopage.vue'
 import AdminDoc from '../views/admin/admin-doc.vue'
 import Doc from '../views/doc.vue'
 import AdminUser from '../views/admin/admin-user.vue'
+import store from "@/store";
+import {Tool} from "@/util/tool";
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -24,7 +26,10 @@ const routes: Array<RouteRecordRaw> = [
   },{
     path: '/admin/ebook',
     name: 'AdminEbook',
-    component: AdminEbook
+    component: AdminEbook,
+    meta: {
+      loginRequire: true
+    }
   },{
     path: '/admin/category',
     name: 'AdminCategory',
@@ -32,11 +37,17 @@ const routes: Array<RouteRecordRaw> = [
   },{
     path: '/admin/admin-category-nopage',
     name: 'AdminCategoryNoPage',
-    component: AdminCategoryNoPage
+    component: AdminCategoryNoPage,
+    meta: {
+      loginRequire: true
+    }
   },{
     path: '/admin/admin-doc',
     name: 'AdminDoc',
-    component: AdminDoc
+    component: AdminDoc,
+    meta: {
+      loginRequire: true
+    }
   }, {
     path: '/doc',
     name: 'Doc',
@@ -45,6 +56,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/user',
     name: 'AdminUser',
     component: AdminUser,
+    meta: {
+      loginRequire: true
+    }
   },
 ]
 
@@ -53,4 +67,22 @@ const router = createRouter({
   routes
 })
 
+// 路由登录拦截
+router.beforeEach((to, from, next) => {
+  // 要不要对meta.loginRequire属性做监控拦截
+  if (to.matched.some(function (item) {
+    console.log(item, "是否需要登录校验：", item.meta.loginRequire);
+    return item.meta.loginRequire
+  })) {
+    const loginUser = store.state.user;
+    if (Tool.isEmpty(loginUser)) {
+      console.log("前端路由拦截器: 用户未登录！");
+      next('/');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 export default router
