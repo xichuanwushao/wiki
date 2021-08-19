@@ -27,6 +27,17 @@
             <a-menu-item key="/about">
                 <router-link to="/about"> 关于我们</router-link>
             </a-menu-item>
+
+            <a-popconfirm
+                    title="确定要退出登录吗?"
+                    ok-text="确认"
+                    cancel-text="取消"
+                    @confirm="logout()"
+            >
+                <a class="login-menu"   v-show="user.id" >
+                    <span>退出登录</span>
+                </a>
+            </a-popconfirm>
             <a class="login-menu"  v-show="user.id" >
                 <span>您好, {{user.name}}</span>
             </a>
@@ -89,16 +100,25 @@
                     const data = response.data;
                     if(data.success){
                         loginModalVisible.value = false;
+                        store.commit('setUser',data.content);
                         message.success("登陆成功！")
-                        store.commit('setUser',user.value);
                     }else{
                         message.error(data.message);
                     }
                 });
             }
-
-
-
+            const logout = () => {
+                console.log("开始退出登录登录")
+                axios.get('user/logout/'+user.value.token).then((response)=>{
+                    const data = response.data;
+                    if(data.success){
+                        message.success("退出登录成功！")
+                        store.commit('setUser', {});
+                    }else{
+                        message.error(data.message);
+                    }
+                });
+            }
             return {
                 loginModalVisible,
                 loginModalLoading,
@@ -106,6 +126,7 @@
                 loginUser,
                 login,
                 user,
+                logout,
             }
         }
     });
@@ -117,5 +138,6 @@
     .login-menu {
         float: right;
         color: white;
+        padding-left: 10px;
     }
 </style>

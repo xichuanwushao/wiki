@@ -12,6 +12,7 @@ const store =  createStore({
     setUser(state, user ){
       //当登录的时候 除了给store赋值 同时把user放进缓存
       //当我刷新就去缓存把变量再次取出来
+      console.log(" store user "+user);
       state.user = user ;
       SessionStorage.set(USER,user);
     }
