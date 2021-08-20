@@ -15,6 +15,14 @@
           </a-tree>
         </a-col>
         <a-col :span="18">
+          <div>
+            <h2>{{doc.name}}</h2>
+            <div>
+              <span>阅读数：{{doc.viewCount}}</span>&nbsp;&nbsp;
+              <span>点赞数：{{doc.voteCount}}</span>
+            </div>
+            <a-divider style="height: 2px; background-color: #9999cc"/>
+          </div>
           <div class="wangeditor" :innerHTML="html" ></div>
         </a-col>
       </a-row>
@@ -41,6 +49,10 @@
       const level1 = ref(); // 一级分类树，children属性就是二级分类
       level1.value = [];
       // level1.value = [];
+
+      //这个表示我当前选中的文档
+      const doc = ref();
+      doc.value = {};
 
       /**
        * 内容查询
@@ -72,6 +84,8 @@
               defaultSelectedKeys.value = [level1.value[0].id];
               //根据这个节点去查找内容
               handleQueryContent(level1.value[0].id);
+              //1.页面初始的时候给doc赋值 统计阅读数用
+              doc.value = level1.value[0];
             }
           }else {
             message.error(data.message);
@@ -86,6 +100,7 @@
         console.log('selected',selectedKeys,info);
         if(Tool.isNotEmpty(selectedKeys)){
           handleQueryContent(selectedKeys[0]);
+          doc.value = info.selectedNodes[0].props;
         }
       }
       onMounted(() => {
@@ -98,6 +113,7 @@
         html,
         onSelect,
         defaultSelectedKeys,
+        doc,
       }
     }
   });
