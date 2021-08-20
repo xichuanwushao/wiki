@@ -22,7 +22,7 @@ public class DocController {
 
     /***
      * 参数使用实体进行模糊查询 并返回指定类型实体
-     * @param docQueryReq
+     * @param ebookId
      * @return
      */
     @GetMapping("/all/{ebookId}")
@@ -81,5 +81,12 @@ public class DocController {
         String content = docService.findContent(id);
         resp.setContent(content);
         return resp;
+    }
+
+    @GetMapping("/vote/{id}")
+    public CommonResp vote(@PathVariable Long id) {
+        CommonResp commonResp = new CommonResp();
+        docService.vote(id);
+        return commonResp;
     }
 }
