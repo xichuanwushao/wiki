@@ -7,6 +7,7 @@ import com.xichuan.wiki.domain.Doc;
 import com.xichuan.wiki.domain.DocExample;
 import com.xichuan.wiki.mapper.ContentMapper;
 import com.xichuan.wiki.mapper.DocMapper;
+import com.xichuan.wiki.mapper.DocMapperCust;
 import com.xichuan.wiki.req.DocQueryReq;
 import com.xichuan.wiki.req.DocSaveReq;
 import com.xichuan.wiki.resp.DocQueryResp;
@@ -28,12 +29,14 @@ public class DocService {
     @Resource
     private ContentMapper contentMapper;
     @Resource
+    private DocMapperCust docMapperCust;
+    @Resource
     private SnowFlake snowFlake;
 
     private static final Logger log = LoggerFactory.getLogger(DocService.class);
     /***
      * 列表CopyUtil复制
-     * @param docQueryReq
+     * @param ebookId
      * @return
      */
     public List<DocQueryResp> all(Long ebookId) {
@@ -85,6 +88,8 @@ public class DocService {
         Content content = CopyUtil.copy(docSaveReq,Content.class);
         if(ObjectUtils.isEmpty(doc.getId())){
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);
             content.setId(doc.getId());
             contentMapper.insert(content);
@@ -107,8 +112,10 @@ public class DocService {
         criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
     }
+
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
+        docMapperCust.increateViewCount(id);
         if(ObjectUtils.isEmpty(content)){
             return "";
         }else{
