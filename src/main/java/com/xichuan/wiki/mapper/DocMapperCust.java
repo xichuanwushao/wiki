@@ -7,4 +7,6 @@ public interface DocMapperCust {
     public void increateViewCount(@Param("id") Long id);
 
     public void increaseVoteCount(@Param("id") Long id);
+
+    public void updateEbookInfo();
 }
