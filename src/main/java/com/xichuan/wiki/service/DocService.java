@@ -18,8 +18,10 @@ import com.xichuan.wiki.util.CopyUtil;
 import com.xichuan.wiki.util.RedisUtil;
 import com.xichuan.wiki.util.RequestContext;
 import com.xichuan.wiki.util.SnowFlake;
+import com.xichuan.wiki.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -38,7 +40,8 @@ public class DocService {
     private SnowFlake snowFlake;
     @Resource
     private RedisUtil redisUtil;
-
+    @Resource
+    public WebSocketServer webSocketServer;
 
     private static final Logger log = LoggerFactory.getLogger(DocService.class);
     /***
@@ -144,9 +147,14 @@ public class DocService {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
 
+        // 推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
     }
 
     public void updateEbookInfo() {
         docMapperCust.updateEbookInfo();
     }
+
+
 }
