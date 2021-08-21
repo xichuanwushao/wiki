@@ -22,6 +22,7 @@ package com.xichuan.wiki.rocketmq;
      public void onMessage(MessageExt messageExt) {
          byte[] body = messageExt.getBody();
          LOG.info("ROCKETMQ收到消息：{}", new String(body));
+         //加上这句 使用mq发消息 mq收到消息在发给ws ws接受消息发给前端即可
          webSocketServer.sendInfo(new String(body));
      }
  }
