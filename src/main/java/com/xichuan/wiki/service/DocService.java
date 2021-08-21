@@ -19,7 +19,7 @@ import com.xichuan.wiki.util.RedisUtil;
 import com.xichuan.wiki.util.RequestContext;
 import com.xichuan.wiki.util.SnowFlake;
 import com.xichuan.wiki.websocket.WebSocketServer;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
+//import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -45,8 +45,8 @@ public class DocService {
     private RedisUtil redisUtil;
     @Resource
     public WsService wsService;
-    @Resource
-    public RocketMQTemplate rocketMQTemplate;
+//    @Resource
+//    public RocketMQTemplate rocketMQTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(DocService.class);
     /***
@@ -155,8 +155,8 @@ public class DocService {
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
         String logId = MDC.get("LOG_ID");
-        //wsService.sendInfo("【" + docDb.getName() + "】被点赞！",logId);
-        rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
+        wsService.sendInfo("【" + docDb.getName() + "】被点赞！",logId);
+        //rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
 
     }
 
