@@ -149,7 +149,8 @@ public class DocService {
         }
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
-        wsService.sendInfo("【" + docDb.getName() + "】被点赞！");
+        String logId = MDC.get("LOG_ID");
+        wsService.sendInfo("【" + docDb.getName() + "】被点赞！",logId);
     }
 
     public void updateEbookInfo() {
