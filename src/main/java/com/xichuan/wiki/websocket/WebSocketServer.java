@@ -61,7 +61,6 @@ public class WebSocketServer {
     /**
      * 群发消息
      */
-    @Async
     public void sendInfo(String message) {
         for (String token : map.keySet()) {
             Session session = map.get(token);

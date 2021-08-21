@@ -147,12 +147,15 @@ public class DocService {
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
-
+        // 推送消息
+        sendInfo(id);
+    }
+    @Async
+    public void sendInfo(Long id){
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
         webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
     }
-
     public void updateEbookInfo() {
         docMapperCust.updateEbookInfo();
     }
