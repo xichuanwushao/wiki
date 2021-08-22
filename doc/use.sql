@@ -36,9 +36,10 @@ and t1.ebook_id = t2.id;
 select t1.ebook_id, view_count , vote_count from ebook_snapshot t1
 where t1.`date` = date_sub(curdate(),interval 1 day);
 
-# 用今天的数据和昨天的数据做比较 昨天的数据就是上方生成的几何 今天的数据查ebook_snapshot表就可以了 只能更新昨天有数据的记录
-update ebook_snapshot t1, (select ebook_id, view_count , vote_count from ebook_snapshot
-                           where `date` = date_sub(curdate(),interval 1 day) ) t2
-set t1.view_increase = (t1.view_count - t2.view_count),
-    t1.vote_increase = (t1.vote_count - t2.vote_count)
-where t1.ebook_id = t2.ebook_id and t1.`date` = curdate();
+# 用今天的数据和昨天的数据做比较 昨天的数据就是上方生成的几何 今天的数据查ebook_snapshot表就可以了 只能更新昨天有数据的记录  不论昨天那有没有数据都要跟新 昨天如果没有数据就把昨天数据设置成0
+update ebook_snapshot t1 left join  (select ebook_id, view_count , vote_count from ebook_snapshot
+                                     where `date` = date_sub(curdate(),interval 1 day) ) t2
+    on t1.ebook_id = t2.ebook_id
+set t1.view_increase = (t1.view_count - ifnull(t2.view_count,0)),
+    t1.vote_increase = (t1.vote_count - ifnull(t2.vote_count,0))
+where  t1.`date` = curdate();
