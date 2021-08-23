@@ -121,8 +121,12 @@
                         // console.log(nowRate)
                         statistic.value.todayViewIncrease = parseInt(String(statisticResp[1].viewIncrease / nowRate));
                         // todayViewIncreaseRate：今日预计增长率
-                        statistic.value.todayViewIncreaseRate = (statistic.value.todayViewIncrease - statisticResp[0].viewIncrease) / statisticResp[0].viewIncrease * 100;
+                        statistic.value.todayViewIncreaseRate = (statistic.value.todayViewIncrease - statisticResp[0].viewIncrease) / statisticResp[0].viewIncrease ;
                         statistic.value.todayViewIncreaseRateAbs = Math.abs(statistic.value.todayViewIncreaseRate);
+                        console.log(" todayViewIncrease "+ statistic.value.todayViewIncrease)
+                        console.log(" viewIncrease "+ statisticResp[0].viewIncrease)
+                        console.log(" viewIncrease "+ statisticResp[0].viewIncrease )
+                        console.log(" todayViewIncreaseRate "+ statistic.value.todayViewIncreaseRate)
                     }
                 });
             };
@@ -154,23 +158,31 @@
             //     myChart.setOption(option);
             // }
 
-            const testEcharts30 = () => {
-                var chartDom = document.getElementById('main');
-                var myChart = echarts.init(chartDom);
-                var option;
-                option = {
+            const init30DayEcharts = (list: any) => {
+                const chartDom = document.getElementById('main');
+                const myChart = echarts.init(chartDom);
+                const xAxis = [];
+                const seriesView = [];
+                const seriesVote = [];
+                for (let i = 0; i < list.length; i++) {
+                    const record = list[i];
+                    xAxis.push(record.date);
+                    seriesView.push(record.viewIncrease);
+                    seriesVote.push(record.voteIncrease);
+                }
+                const option = {
                     title: {
-                        text: '折线图堆叠'
+                        text: '30天趋势图'
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+                        data: ['总阅读量', '总点赞量']
                     },
                     grid: {
-                        left: '3%',
-                        right: '4%',
+                        left: '1%',
+                        right: '3%',
                         bottom: '3%',
                         containLabel: true
                     },
@@ -182,56 +194,45 @@
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
-                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                        data: xAxis
                     },
                     yAxis: {
                         type: 'value'
                     },
                     series: [
                         {
-                            name: '邮件营销',
+                            name: '总阅读量',
                             type: 'line',
-                            stack: '总量',
-                            data: [120, 132, 101, 134, 90, 230, 210],
+                            //stack: '总量', 不堆叠
+                            data: seriesView,
                             smooth: true
                         },
                         {
-                            name: '联盟广告',
+                            name: '总点赞量',
                             type: 'line',
-                            stack: '总量',
-                            data: [220, 182, 191, 234, 290, 330, 310],
-                            smooth: true
-                        },
-                        {
-                            name: '视频广告',
-                            type: 'line',
-                            stack: '总量',
-                            data: [150, 232, 201, 154, 190, 330, 410],
-                            smooth: true
-                        },
-                        {
-                            name: '直接访问',
-                            type: 'line',
-                            stack: '总量',
-                            data: [320, 332, 301, 334, 390, 330, 320],
-                            smooth: true
-                        },
-                        {
-                            name: '搜索引擎',
-                            type: 'line',
-                            stack: '总量',
-                            data: [820, 932, 901, 934, 1290, 1330, 1320],
+                            //stack: '总量', 不堆叠
+                            data: seriesVote,
                             smooth: true
                         }
                     ]
                 };
                 option && myChart.setOption(option);
             }
+
+            const get30DayStatistic = () => {
+                axios.get('/ebook-snapshot/get-30-statistic').then((response)=>{
+                    const data = response.data;
+                    if (data.success) {
+                        const statisticList = data.content;
+                        init30DayEcharts(statisticList)
+                    }
+                });
+            }
             onMounted(() => {
                 getStatistic();
                 // testEcharts();
-                testEcharts30();
-
+                //testEcharts30();
+                get30DayStatistic();
             });
             return {
                 statistic

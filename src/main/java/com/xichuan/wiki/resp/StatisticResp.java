@@ -1,10 +1,13 @@
 package com.xichuan.wiki.resp;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class StatisticResp {
 
+    @JsonFormat(pattern="MM-dd", timezone = "GMT+8")
     private Date date;
 
     private int viewCount;
