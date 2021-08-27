@@ -9,6 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.xichuan</groupId>
+
     <artifactId>wiki</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>wiki</name>
@@ -85,6 +86,7 @@
     </dependencies>
 
     <build>
+
         <finalName>/dist/${artifactId}</finalName>
         <plugins>
             <plugin>
